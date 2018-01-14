@@ -1260,7 +1260,6 @@ var PDFViewerApplication = {
      setTitleUsingUrl: function pdfViewSetTitleUsingUrl(url) {
     this.url = url;
     try {
-        debugger;
       this.setTitle(decodeURIComponent(getFileName(url)) || url);
     } catch (e) {
       // decodeURIComponent may throw URIError,
