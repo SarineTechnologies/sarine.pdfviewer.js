@@ -12,13 +12,13 @@ gulp.task('js', function() {
 });
 
 gulp.task('copybuild', function() {
- return  gulp.src('build/*')
+ return  gulp.src('build/**/*')
   .pipe(gulp.dest('dist/build'))
 });
 
 
 gulp.task('copyweb', function() {
- return  gulp.src('web/*')
+ return  gulp.src('web/**/*')
   .pipe(gulp.dest('dist/web'))
 });
 
