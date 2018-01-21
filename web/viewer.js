@@ -16,7 +16,6 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/    debugger;
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/
@@ -1260,7 +1259,6 @@ var PDFViewerApplication = {
      setTitleUsingUrl: function pdfViewSetTitleUsingUrl(url) {
     this.url = url;
     try {
-        debugger;
       this.setTitle(decodeURIComponent(getFileName(url)) || url);
     } catch (e) {
       // decodeURIComponent may throw URIError,
@@ -1868,7 +1866,7 @@ var PDFViewerApplication = {
 };
 var validateFileURL = void 0;
 {
-  var HOSTED_VIEWER_ORIGINS = ['null', 'http://mozilla.github.io', 'https://mozilla.github.io'];
+  var HOSTED_VIEWER_ORIGINS = ['null', 'http://mozilla.github.io', 'https://mozilla.github.io','*'];
   validateFileURL = function validateFileURL(file) {
     if (file === undefined) {
       return;
@@ -1879,7 +1877,7 @@ var validateFileURL = void 0;
        return;
       }
       var fileOrigin = new URL(file, window.location.href).origin;
-     // if (fileOrigin !== viewerOrigin) {
+     //if (fileOrigin !== viewerOrigin) {
       //  throw new Error('file origin does not match viewer\'s');
     //  }
     } catch (ex) {
