@@ -1,6 +1,6 @@
 {
   "name": "sarine.viewerPdf.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "devDependencies": {
     "gulp": "latest",
     "gulp-coffee": "latest",
