@@ -1,6 +1,6 @@
 {
   "name": "sarine.viewerPdf.js",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "devDependencies": {
     "grunt-git-release": "^0.1.3",
     "grunt": "^0.4.5",
