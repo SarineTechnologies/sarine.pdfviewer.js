@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         if(process.env.buildFor == 'deploy')
         {
             return {
-                build: 'dist/build'
+                build: 'dist'
              }
         }
         else
