@@ -2032,10 +2032,12 @@ var webViewerOpenFileViaURL = void 0;
     }
     if (file) {
       if (proxy) {
+        PDFViewerApplication.setTitleUsingUrl(file);
         var xhr = new XMLHttpRequest();
         xhr.open('GET', proxy + file, true);
         xhr.responseType = 'arraybuffer';
         xhr.onload = function (e) {
+          PDFViewerApplication.toolbar.updateLoadingIndicatorState(false);
           PDFViewerApplication.open(e.currentTarget.response);
         };
         xhr.onerror = function () {
@@ -2044,6 +2046,7 @@ var webViewerOpenFileViaURL = void 0;
           });         
         }
         xhr.send();
+        PDFViewerApplication.toolbar.updateLoadingIndicatorState(true);
       }
       else
         PDFViewerApplication.open(file);
