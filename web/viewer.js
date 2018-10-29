@@ -16,7 +16,6 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/    debugger;
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/
@@ -1867,7 +1866,7 @@ var PDFViewerApplication = {
 };
 var validateFileURL = void 0;
 {
-  var HOSTED_VIEWER_ORIGINS = ['null', 'http://mozilla.github.io', 'https://mozilla.github.io'];
+  var HOSTED_VIEWER_ORIGINS = ['null', 'http://mozilla.github.io', 'https://mozilla.github.io','*'];
   validateFileURL = function validateFileURL(file) {
     if (file === undefined) {
       return;
@@ -1878,7 +1877,7 @@ var validateFileURL = void 0;
        return;
       }
       var fileOrigin = new URL(file, window.location.href).origin;
-     // if (fileOrigin !== viewerOrigin) {
+     //if (fileOrigin !== viewerOrigin) {
       //  throw new Error('file origin does not match viewer\'s');
     //  }
     } catch (ex) {
@@ -1915,6 +1914,7 @@ function webViewerInitialized() {
   var queryString = document.location.search.substring(1);
   var params = (0, _ui_utils.parseQueryString)(queryString);
   file = 'file' in params ? params.file : appConfig.defaultUrl;
+  var proxy ='proxy' in params ? params.proxy : null;
   validateFileURL(file);
   var waitForBeforeOpening = [];
   var fileInput = document.createElement('input');
@@ -2002,7 +2002,7 @@ function webViewerInitialized() {
     PDFViewerApplication.pdfSidebar.toggle();
   });
   Promise.all(waitForBeforeOpening).then(function () {
-    webViewerOpenFileViaURL(file);
+    webViewerOpenFileViaURL(file, proxy);
   }).catch(function (reason) {
     PDFViewerApplication.l10n.get('loading_error', null, 'An error occurred while opening.').then(function (msg) {
       PDFViewerApplication.error(msg, reason);
@@ -2011,7 +2011,8 @@ function webViewerInitialized() {
 }
 var webViewerOpenFileViaURL = void 0;
 {
-  webViewerOpenFileViaURL = function webViewerOpenFileViaURL(file) {
+ 
+  webViewerOpenFileViaURL = function webViewerOpenFileViaURL(file, proxy) {
     if (file && file.lastIndexOf('file:', 0) === 0) {
       PDFViewerApplication.setTitleUsingUrl(file);
       var xhr = new XMLHttpRequest();
@@ -2030,7 +2031,25 @@ var webViewerOpenFileViaURL = void 0;
       return;
     }
     if (file) {
-      PDFViewerApplication.open(file);
+      if (proxy) {
+        PDFViewerApplication.setTitleUsingUrl(file);
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', proxy + file, true);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = function (e) {
+          PDFViewerApplication.toolbar.updateLoadingIndicatorState(false);
+          PDFViewerApplication.open(e.currentTarget.response);
+        };
+        xhr.onerror = function () {
+          PDFViewerApplication.l10n.get('loading_error', null, 'An error occurred while loading the PDF.').then(function (msg) {
+            PDFViewerApplication.error(msg, ex);
+          });         
+        }
+        xhr.send();
+        PDFViewerApplication.toolbar.updateLoadingIndicatorState(true);
+      }
+      else
+        PDFViewerApplication.open(file);
     }
   };
 }
